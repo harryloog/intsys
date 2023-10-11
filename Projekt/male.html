@@ -1,0 +1,497 @@
+
+
+<!doctype html>
+<html>
+  <head>
+  <link rel="stylesheet" href="styles.css">
+    <script>
+	  let start=
+				  "VROLJORV"+
+	              "EEEEEEEE"+
+	              " . . . ."+
+	              ". . . . "+
+	              " . . . ."+
+	              ". . . . "+
+	              "FFFFFFFF"+
+	              "WSPMKPSW"+
+				  "10000000000000000111111";
+				  
+				  /*" . J . ."+
+	              ".E. . . "+
+	              " . . . ."+
+	              ". . . . "+
+	              " . . . ."+
+	              ". . . . "+
+	              " . .F. ."+
+	              ". . .K. "+
+				  "10000000000000000111111";
+				  " .R.J. V"+
+	              "L . . . "+
+	              " V . .E."+
+	              ". .E. O "+
+	              " . . . ."+
+	              ". . . . "+
+	              "P. . . P"+
+	              "W .K.M.S"+
+				  "10000000000000000111111";*/
+	  const etturid = ["E","F"];
+		 const vankrid = ["V","W"];
+		 const ratsud = ["R","S"];
+		 const odad = ["O","P"];
+		 const lipud = ["L","M"];
+		 const kuningad = ["J","K"];
+		 const white = ["E","V","R","O","L","J"];
+		 const black = ["F","W","S","N","M","K"];
+		 const did2moves=[];
+		 const empty=[" ","."];
+		 const chars=["J","L","V","O","R","E","K","M","W","P","S","F","."];
+		 const chars2=["♔","♕","♖","♗","♘","♙","♚","♛","♜","♝","♞","♟"," "];
+		 let counter = 0;
+		 
+	  function checkSide(char)
+	  {
+		if(white.includes(char)){return "1";}
+		else if(black.includes(char)){return "2";}
+	  }
+		 
+	  function addPossibleMoves(playerSideIndex, status, attackMoves)
+	  {
+		
+		let available = [];
+		for(let i=0; i<playerSideIndex.length; i++){
+		   let current=playerSideIndex[i];
+		   switch(status[current])
+		   {
+				case etturid[parseInt(status[64])-1]:
+					if(!did2moves.includes(current))
+					{
+						if(7<current<16 || 54<current<63)
+						{
+							let possibleMove1=status[64]=="1"?current-16:current+16;
+							if(isAvailable(current, possibleMove1, status, attackMoves)){available.push([current, possibleMove1]);}
+							did2moves.push(current);
+						}
+					}
+					let possibleMove1=status[64]=="1"?current-8:current+8;
+					if(isAvailable(current, possibleMove1, status, attackMoves)){available.push([current, possibleMove1]);}
+					if((current+(status[64]=="1"?-7:+7)+1)%8!=0)
+					{
+						let possibleMove30=status[64]=="1"?current-7:current+7;
+						if(isAvailable(current, possibleMove1, status, attackMoves)){}
+					}
+					if((current+(status[64]=="1"?-9:+9)+1)%8!=0)
+					{
+						let possibleMove30=status[64]=="1"?current-9:current+9;
+						if(isAvailable(current, possibleMove1, status, attackMoves)){}
+					}
+					if(Math.floor(current/8)==(status[64]=="1"?4:3))
+					{
+						if((current+1+1)%8!=0 && status[(status[64]=="1"?73:65)+current%8+1]=="1")
+						{
+							let possibleMove31=current+1;
+							if(isAvailable(current, possibleMove1, status, attackMoves)){}
+						}
+						if((current-1+1)%8!=0 && status[(status[64]=="1"?65:73)+current%8-1]=="1")
+						{
+							let possibleMove31=current-1;
+							if(isAvailable(current, possibleMove1, status, attackMoves)){}
+						}
+					}
+					break;
+				case vankrid[parseInt(status[64])-1]:
+					for(let i = 1; i < 9; i++)
+					{	
+						let possibleMove2=current+(8*i);
+						if(isAvailable(current, possibleMove2, status, attackMoves)){available.push([current, possibleMove2]);}else{break;}
+					} for(let i = 1; i < 9; i++)
+					{
+						let possibleMove3=current-(8*i);
+						if(isAvailable(current, possibleMove3, status, attackMoves)){available.push([current, possibleMove3]);}else{break;}
+					} for(let i = 1; i < 9; i++)
+					{
+						if((current+(1*i)+1)%8!=0)
+						{
+							let possibleMove4=current+(1*i);
+							if(isAvailable(current, possibleMove4, status, attackMoves)){available.push([current, possibleMove4]);}else{break;}
+						} else{break;}
+					} for(let i = 1; i < 9; i++)
+					{
+						if((current+(1*i)+1)%8!=0)
+						{
+							let possibleMove5=current-(1*i);
+							if(isAvailable(current, possibleMove5, status, attackMoves)){available.push([current, possibleMove5]);}else{break;}
+						} else{break;}
+					}
+					break;
+				case ratsud[parseInt(status[64])-1]:
+						if((current-17+1)%8!=0)
+						{
+							let possibleMove6=current-17;
+							if(isAvailable(current, possibleMove6, status, attackMoves)){available.push([current, possibleMove6]);}
+						}
+						if((current-15+1)%8!=0)
+						{
+							let possibleMove7=current-15;
+							if(isAvailable(current, possibleMove7, status, attackMoves)){available.push([current, possibleMove7]);}
+						}
+						if((current-10+1)%8!=0)
+						{
+							let possibleMove8=current-10;
+							if(isAvailable(current, possibleMove8, status, attackMoves)){available.push([current, possibleMove8]);}
+						}
+						if((current-6+1)%8!=0)
+						{
+							let possibleMove9=current-6;
+							if(isAvailable(current, possibleMove9, status, attackMoves)){available.push([current, possibleMove9]);}
+						}
+						if((current+6+1)%8!=0)
+						{
+							let possibleMove10=current+6;
+							if(isAvailable(current, possibleMove10, status, attackMoves)){available.push([current, possibleMove10]);}
+						}
+						if((current+10+1)%8!=0)
+						{
+							let possibleMove11=current+10;
+							if(isAvailable(current, possibleMove11, status, attackMoves)){available.push([current, possibleMove11]);}
+						}
+						if((current+15+1)%8!=0)
+						{
+							let possibleMove12=current+15;
+							if(isAvailable(current, possibleMove12, status, attackMoves)){available.push([current, possibleMove12]);}
+						}
+						if((current+17+1)%8!=0)
+						{
+							let possibleMove13=current+17;
+							if(isAvailable(current, possibleMove13, status, attackMoves)){available.push([current, possibleMove13]);}
+						}
+						break;
+				case odad[parseInt(status[64])-1]:
+					for(let i = 1; i < 9; i++)
+					{
+						if((current-(9*i)+1)%8!=0)
+						{
+							let possibleMove14=current-(9*i);
+							if(isAvailable(current, possibleMove14, status, attackMoves)){available.push([current, possibleMove14]);}else{break;}
+						}
+					} for(let i = 1; i < 9; i++)
+					{
+						if((current-(7*i)+1)%8!=0)
+						{
+							let possibleMove15=current-(7*i);
+							if(isAvailable(current, possibleMove15, status, attackMoves)){available.push([current, possibleMove15]);}else{break;}
+						}
+					} for(let i = 1; i < 9; i++)
+					{
+						if((current+(7*i)+1)%8!=0)
+						{
+							let possibleMove16=current+(7*i);
+							if(isAvailable(current, possibleMove16, status, attackMoves)){available.push([current, possibleMove16]);}else{break;}
+						}
+					} for(let i = 1; i < 9; i++)
+					{
+						if((current+(9*i)+1)%8!=0)
+						{
+							let possibleMove17=current+(9*i);
+							if(isAvailable(current, possibleMove17, status, attackMoves)){available.push([current, possibleMove17]);}else{break;}
+						}
+					}
+					break;
+				case lipud[parseInt(status[64])-1]:
+					for(let i = 1; i < 9; i++)
+					{
+						let possibleMove18=current+(8*i);
+						if(isAvailable(current, possibleMove18, status, attackMoves)){available.push([current, possibleMove18]);}else{break;}
+					} for(let i = 1; i < 9; i++)
+					{
+						let possibleMove19=current-(8*i);
+						if(isAvailable(current, possibleMove19, status, attackMoves)){available.push([current, possibleMove19]);}else{break;}
+					} for(let i = 1; i < 9; i++)
+					{
+						if((current+(1*i)+1)%8!=0)
+						{
+							let possibleMove20=current+(1*i);
+							if(isAvailable(current, possibleMove20, status, attackMoves)){available.push([current, possibleMove20]);}else{break;}
+						}else{break;}
+					} for(let i = 1; i < 9; i++)
+					{	if((current-(1*i)+1)%8!=0)
+						{
+							let possibleMove21=current-(1*i);
+							if(isAvailable(current, possibleMove21, status, attackMoves)){available.push([current, possibleMove21]);}else{break;}
+						}else{break;}
+					}
+					break;
+				case kuningad[parseInt(status[64])-1]:
+						if((current-9+1)%8!=0)
+						{
+							let possibleMove22=current-9;
+							if(isAvailable(current, possibleMove22, status, attackMoves)){available.push([current, possibleMove22]);}
+						}
+						let possibleMove23=current-8;
+						if(isAvailable(current, possibleMove23, status, attackMoves)){available.push([current, possibleMove23]);}
+						if((current-7+1)%8!=0)
+						{
+							let possibleMove24=current-7;
+							if(isAvailable(current, possibleMove24, status, attackMoves)){available.push([current, possibleMove24]);}
+						}
+						if((current-1+1)%8!=0)
+						{
+							let possibleMove25=current-1;
+							if(isAvailable(current, possibleMove25, status, attackMoves)){available.push([current, possibleMove25]);}
+						}
+						if((current+1+1)%8!=0)
+						{
+							let possibleMove26=current+1;
+							if(isAvailable(current, possibleMove26, status, attackMoves)){available.push([current, possibleMove26]);}
+						}
+						if((current+7+1)%8!=0)
+						{
+							let possibleMove27=current+7;
+							if(isAvailable(current, possibleMove27, status, attackMoves)){available.push([current, possibleMove27]);}
+						}
+						let possibleMove28=current+8;
+						if(isAvailable(current, possibleMove28, status, attackMoves)){available.push([current, possibleMove28]);}
+						if((current+9+1)%8!=0)
+						{
+							let possibleMove29=current+9;
+							if(isAvailable(current, possibleMove29, status, attackMoves)){available.push([current, possibleMove29]);}
+						}
+						break;
+		   }
+		}
+		return available;
+	  }
+		 
+      function getMoves(status){
+		 
+		 let player = status[64];
+		 let playerSideIndex=[];
+		 for(let i=0; i<64; i++)
+		 {
+		    if(checkSide(status[i])==status[64]){playerSideIndex.push(i);}
+		 }
+		 
+		 let attackMoves = [];
+		 let availableMoves=addPossibleMoves(playerSideIndex, status, attackMoves);
+		 let statuses=[];
+		 availableMoves.forEach(function(move){
+		   let text=status.split("");
+		   text[move[1]]=text[move[0]];
+		   
+		   for(let i=0; i<16;i++)
+		   {
+			   status[65+i]=0;
+		   }//look en passant - kontrollib kas ettur selle mangija selles reas kais pika sammu
+		   if(text[move[0]]==etturid[parseInt(status[64])-1] && Math.abs(move[1]-move[0])==16)
+		   {
+			   status[(status[64]=="1"?65:73)+move[0]%8]=1;
+		   }//vaatab,et malelaua mustad ja valged ruudud oleks oigetel kohtadel
+		   if(((move[0]+1)%16<8 && (move[0]+1)%16%2==0) || ((move[0]+1)%16>8 && (move[0]+1)%16%2==1)){text[move[0]]=".";}
+		   if(((move[0]+1)%16<8 && (move[0]+1)%16%2==1) || ((move[0]+1)%16>8 && (move[0]+1)%16%2==0)){text[move[0]]=" ";}
+		   //iga esimese rea puhul paaris
+		   //iga teise rea puhul paaritu
+		   text[64]=(player=="1")?"2":"1";
+		   statuses.push(text.join(""));
+		   
+		 });
+		 
+		 if(attackMoves.length>0){
+		    statuses=[];
+            attackMoves.forEach(function(move){
+			   let text=status.split("");
+			   text[move[1]]=text[move[0]];
+			   if(((move[0]+1)%16<8 && (move[0]+1)%16%2==0) || ((move[0]+1)%16>8 && (move[0]+1)%16%2==1)){text[move[0]]=".";}
+			   if(((move[0]+1)%16<8 && (move[0]+1)%16%2==1) || ((move[0]+1)%16>8 && (move[0]+1)%16%2==0)){text[move[0]]=" ";}
+			   text[64]=(player=="1")?"2":"1";
+			   statuses.push(text.join(""));
+			});			
+		 }
+		 //vangerdus
+		 if(status[status[64]=="1"?81:84]=="1" && status[status[64]=="1"?83:86]=="1" && empty.includes(status[status[64]=="1"?1:57]) && empty.includes(status[status[64]=="1"?2:58]) && empty.includes(status[status[64]=="1"?3:59]))
+		{
+			let vanguard = status;
+			vanguard[status[64]=="1"?2:58]=kuningad[parseInt(status[64])-1];
+			vanguard[status[64]=="1"?3:59]=vankrid[parseInt(status[64])-1];
+			vanguard[status[64]=="1"?0:56]=status[64]=="1"?" ":".";
+			vanguard[status[64]=="1"?4:60]=status[64]=="1"?" ":".";
+			statuses.push(vanguard);
+			status[status[64]=="1"?81:84]="0";
+			status[status[64]=="1"?83:86]="0";
+		}
+		 if(status[status[64]=="1"?82:85]=="1" && status[status[64]=="1"?83:86]=="1" && empty.includes(status[status[64]=="1"?5:61]) && empty.includes(status[status[64]=="1"?6:62]))
+		{
+			let vanguard = status;
+			vanguard[status[64]=="1"?6:62]=kuningad[parseInt(status[64])-1];
+			vanguard[status[64]=="1"?5:61]=vankrid[parseInt(status[64])-1];
+			vanguard[status[64]=="1"?7:63]=status[64]=="1"?".":" ";
+			vanguard[status[64]=="1"?4:60]=status[64]=="1"?" ":".";
+			statuses.push(vanguard);
+			status[status[64]=="1"?82:85]="0";
+			status[status[64]=="1"?83:86]="0";
+		}
+		//kas vanker liikunud
+		if(status[status[64]=="1"?0:56]!=vankrid[parseInt(status[64])-1]){status[status[64]=="1"?81:84]="0";}
+		if(status[status[64]=="1"?7:63]!=vankrid[parseInt(status[64])-1]){status[status[64]=="1"?82:85]="0";}
+		//kas kuningass liikunud
+		 if(status[status[64]=="1"?4:60]!=kuningad[parseInt(status[64])-1]){status[status[64]=="1"?83:86]="0";}
+		 playerSideIndex.forEach(function(a)
+		 {
+			if(statuses.some(el => el[a] === etturid[parseInt(status[64])-1] && Math.floor(a/8)==(status[64]=="1"?7:0)))
+			{
+				s1 = statuses.map((x) => x);
+				 s2 = statuses.map((x) => x);
+				 s3 = statuses.map((x) => x);
+				 s4 = statuses.map((x) => x);
+				 statuses = [];
+				s1[s1.findIndex(el => el[a] === etturid[parseInt(status[64])-1] && Math.floor(a/8)==(status[64]=="1"?7:0))] = lipud[parseInt(status[64])-1];
+				s2[s2.findIndex(el => el[a] === etturid[parseInt(status[64])-1] && Math.floor(a/8)==(status[64]=="1"?7:0))] = odad[parseInt(status[64])-1];
+				s3[s3.findIndex(el => el[a] === etturid[parseInt(status[64])-1] && Math.floor(a/8)==(status[64]=="1"?7:0))] = ratsud[parseInt(status[64])-1];
+				s4[s4.findIndex(el => el[a] === etturid[parseInt(status[64])-1] && Math.floor(a/8)==(status[64]=="1"?7:0))] = vankrid[parseInt(status[64])-1];
+				s1=s1.map((x) => {statuses.push(x);});
+				s2=s2.map((x) => {statuses.push(x);});
+				s3=s3.map((x) => {statuses.push(x);});
+				s4=s4.map((x) => {statuses.push(x);});
+			}
+		});
+		statuses.every(function(a){
+			if(!a.includes(status[64]=="1"?"J":"K"))
+			{
+				statuses = statuses.filter(function (b) 
+				{
+					return b[status.split("").findIndex(el => el===(status[64]=="1"?"J":"K"))]!=(status[64]=="1"?"J":"K") && b.includes(status[64]=="1"?"J":"K");
+				});
+				return false;
+			}
+		});
+		
+		 return statuses;
+	  }
+		 
+	 function isAvailable(current, move, status, attackMoves)
+	 {
+		let opponent=(status[64]=="1")?black:white;
+		if (empty.includes(status[move]))
+		{
+			return true;
+		} else if (opponent.includes(status[move]))
+		{
+			attackMoves.push([current, move]);
+			return false;
+		} else return false;
+	 }
+	 
+	 function seisuHinnang(seis, uusTase){
+	     let a=getMoves(seis);
+		 counter += a.length;
+		 if(a.length==0){
+		    return (seis[64]=="1")?-20:20;
+		 }
+		 let tase=uusTase;
+		 if(tase>=3){
+		    console.log(tase, "tase, kaike ;" + counter);
+		    let m=seis.substring(0, 63).split("");
+		    let xe=m.filter(s => white.includes(s)).length;
+		    let ne=m.filter(s => black.includes(s)).length;
+			return xe-ne;
+		 } else {
+		 //let h=a.map(seis => seisuHinnang(seis, tase+1));
+		 let h=[];
+		 for(let i=0; i<a.length; i++){
+		    h.push(seisuHinnang(a[i], tase+1));
+		 }
+		 return (seis[64]=="1")?Math.max(...h):Math.min(...h); 
+		 }
+	  }
+	  
+	  function arvutiKaibParimalt(){
+	     let k=getMoves(start);
+		 
+		 if(!checkKing())
+		 {
+			 if(k.length==0){
+				alert(start[64]=="1"?"V6itja on must":"V6itja on valge");
+				return;
+			 }
+		 }
+		 let hinnangud=k.map(seis => seisuHinnang(seis, 0));
+		 let mitmes=0;
+		 let parimHinnang=(start[64]=="1")?
+		    Math.max(...hinnangud):Math.min(...hinnangud);
+		 console.log(parimHinnang);
+	     for(let i=0; i<k.length; i++){
+		    if(hinnangud[i]==parimHinnang){mitmes=i;}
+		 }		
+		 start=k[mitmes];
+		 kuva();
+	  }
+	  
+	  function algus(){
+	     for (let i=0; i< 64; i++)
+		{
+			document.getElementById("laud").appendChild(document.createElement("div")).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#92594D' : 'white'; 
+		}
+		 kuva();
+	    // console.log(seisuHinnang(praeguneSeis));
+	  }
+	  
+	  function kuva(){
+		if(start[7]==="V" && start[6]==="V" && start[0]==="V")
+		 {
+			start[7]=".";
+		 }
+	     let v=start.substring(0, 64);
+		 v=v.split("");
+		 for(let i=0;i<v.length;i++)
+		 {
+			if(chars.includes(v[i]))
+			{
+				v[i]=chars2[chars.indexOf(v[i])];
+			}
+		 }
+		 v=v.join("");
+		 for (let i = 0; i<64;i++)
+		 {
+			document.getElementById("laud").children[i].innerHTML = v[i];
+		 }
+		 document.getElementById("player").innerText="Käib : " + (start[64]=="1"?"Valge":"Must");
+		 checkKing();
+	  }
+		 
+	  function juhuslikKaik(){
+	    let m=getMoves(start);
+		if(!checkKing())
+		{
+			if(m.length>0){
+			  start=m[Math.floor(m.length*Math.random())];
+			  kuva();
+			} else {
+			   alert(start[64]=="1"?"V6itja on mustD":"V6itja on valge");
+			}
+		}
+		
+	  }
+	  
+	  function checkKing()
+	  {
+		if(!start.includes("J"))
+		{
+			alert("V6itja on valge");
+		} else if (!start.includes("K"))
+		{
+			alert("V6itja on must");
+			return "2";
+		} else return false;
+	  }
+		 
+		    
+		   
+		   
+		
+	</script>
+  </head>
+  <body onload="algus()">
+    <div id="laud"></div><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	<p id="player"></p>
+	<input type="button" value="Juhuslik" onclick="juhuslikKaik()" /><br/><br/>
+	<input type="button" value="ap" onclick="arvutiKaibParimalt()" />
+  </body>
+</html>

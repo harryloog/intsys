@@ -1,0 +1,106 @@
+<!-- * Koosta kaart punktide (vähemalt 6) ning nendevaheliste otseteedega (vähemalt 10). Iga punkti lisaomaduseks on tema kõrgus merepinnast.
+* Arvuta ja kuva üks võimalik teekond kahe valitud punkti vahel. Arvuta sealjuures tõusu- ning laskumismeetrite hulk
+* Leia teekond kahe valitud punkti vahel, nii et ükski teekonnapunkt ei korduks ning tõusu- ja laskumismeetrite summa oleks võimalikult suur.
+ -->
+
+<!doctype html>
+<html>
+ <head>
+   <title>Kaart</title>
+   <script>
+       let punktid = {
+	   "1":[15,"2"],
+	   "2":[4256,"6","5","4"],
+	   "3":[432,"5"],
+	   "4":[3432,"3","1"],
+	   "5":[324,],
+	   "6":[324,"2","4","3"]
+	   }
+	   let text = "";
+	   let start = "";
+	   let finish = "";
+	   let teekond = [];
+	   let teekonnad = [];
+	   let up = 0;
+	   let down = 0;
+	   
+	  
+	  function check()
+	  {
+		let viimane = teekond[teekond.length-1];
+		if(viimane===finish)
+		{
+			return true;
+		}
+		if(viimane in punktid)
+		{
+			for(let i=1;i<punktid[viimane].length;i++)
+			{
+				while(teekond.includes(punktid[viimane][i]))
+				{
+					i++;
+				}
+				if (punktid[punktid[viimane][i]][0] < punktid[viimane][0])
+				{
+					down += punktid[viimane][0] - punktid[punktid[viimane][i]][0];	
+				}
+				if (punktid[punktid[viimane][i]][0] > punktid[viimane][0])
+				{
+					up += punktid[punktid[viimane][i]][0] - punktid[viimane][0];	
+				}
+				teekond.push(punktid[viimane][i]);
+				check();
+			}
+		} else {teekond.pop();}
+	  }
+	  
+	  function getText()
+	  {
+		text = "Teekond : "
+		for (let i = 0; i < teekond.length; i++)
+		{
+			text += " " + teekond[i] + ", ";
+		}
+		text += "\n" + "Ulesmage suunatud teepikkus :" + up;
+		text += "\n" + "Allamage suunatud teepikkus :" + down;
+		
+		return text;
+	  }
+	  
+	  function leia(){
+		teekond = [];
+        document.getElementById("punk1").innerText=document.getElementById("punkt1").value;
+		document.getElementById("punk2").innerText=document.getElementById("punkt2").value;
+		start = document.getElementById("punkt1").value;
+		finish = document.getElementById("punkt2").value;
+		teekond.push(start);
+		check();
+		document.getElementById("vastus").innerText=getText();
+	  }
+   </script>
+ </head>
+ <body>
+   <p>alguspunkt:</p><p id="punk1"></p><br/><br/>
+   <p>lopppunkt:</p><p id="punk2"></p><br/><br/>
+   <div id="valikud">
+		<select name = "selectPunkt" id = "punkt1">
+			<option value = "1">Punkt 1</option>
+			<option value = "2">Punkt 2</option>
+			<option value = "3">Punkt 3</option>
+			<option value = "4">Punkt 4</option>
+			<option value = "5">Punkt 5</option>
+			<option value = "6">Punkt 6</option>
+		</select><br/><br/>
+		<select name = "selectPunkt2" id = "punkt2">
+			<option value = "1">Punkt 1</option>
+			<option value = "2">Punkt 2</option>
+			<option value = "3">Punkt 3</option>
+			<option value = "4">Punkt 4</option>
+			<option value = "5">Punkt 5</option>
+			<option value = "6">Punkt 6</option>
+		</select><br/><br/>
+		<button onclick="leia()">Leia tee</button>
+   </div>
+   <p id="vastus"></p><br/><br/>
+ </body>
+</html>

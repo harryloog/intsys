@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+ <head>
+   <title>Suguvosa</title>
+   <script>
+       let puu =
+	   {
+	   "Mari":["Mati", "Saara", "Robert"],
+	   "Mati":["Mari", "Karl", "Fred"],
+	   "Karl":["Fred", "Jakob", "Kaarel"],
+	   "Jakob":["Robert", "Merilin"]
+	   };
+	   let text = "";
+	   let start = "";
+	   let finish = "";
+	   let sammud = [];
+	   let teekonnad = [];
+	   let up = 0;
+	   let down = 0;
+	   let found = false;
+	  
+	  function check()
+	  {
+		let viimane = sammud[sammud.length-1];
+		if(viimane===finish)
+		{
+			found = true;
+			return;
+		}
+		if(viimane in puu)
+		{
+			for(let i=0;i<puu[viimane].length-1;i++)
+			{
+				while(sammud.includes(puu[viimane][i]))
+				{
+					i++;
+				}
+				sammud.push(puu[viimane][i]);
+				check();
+			}
+		} else {sammud.pop();}
+	  }
+	  
+	  function leia(){
+		sammud = [];
+		found = false;
+        document.getElementById("punk1").innerText=document.getElementById("punkt1")[document.getElementById("punkt1").value-1].innerText;
+		document.getElementById("punk2").innerText=document.getElementById("punkt2")[document.getElementById("punkt2").value-1].innerText;
+		start = document.getElementById("punkt1")[document.getElementById("punkt1").value-1].innerText;
+		finish = document.getElementById("punkt2")[document.getElementById("punkt2").value-1].innerText;
+		sammud.push(start);
+		console.log(puu, sammud, start, finish);
+		check();
+		document.getElementById("vastus").innerText=getText();
+	  }
+	  function getText()
+	  {
+		if(found)
+		{
+			text = "sammud : "
+			for (let i = 0; i < sammud.length; i++)
+			{
+				text += " " + sammud[i] + ", ";
+			}
+			text += "\n" + start + " kaugus " + finish + "st on " + sammud.length + " sammu.";
+			
+			return text;
+		} else {text = start + " juurest ei saa minna " + finish + " juurde."; return text;}
+	  }
+      
+   </script>
+ </head>
+ <body>
+   <p>algus:</p><p id="punk1"></p><br/><br/>
+   <p>lopp:</p><p id="punk2"></p><br/><br/>
+   <div id="valikud">
+		<select name = "selectPunkt" id = "punkt1">
+			<option value = "1">Mari</option>
+			<option value = "2">Mati</option>
+			<option value = "3">Karl</option>
+			<option value = "4">Jakob</option>
+		</select><br/><br/>
+		<select name = "selectPunkt2" id = "punkt2">
+			<option value = "1">Mari</option>
+			<option value = "2">Mati</option>
+			<option value = "3">Karl</option>
+			<option value = "4">Jakob</option>
+		</select><br/><br/>
+		<button onclick="leia()">Leia mitme sammu kaugusel on </button>
+   </div>
+   <p id="vastus"></p><br/><br/>
+ </body>
+</html>
